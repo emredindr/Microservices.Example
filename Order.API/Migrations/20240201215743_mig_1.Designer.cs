@@ -12,8 +12,8 @@ using Order.API.Models;
 namespace Order.API.Migrations
 {
     [DbContext(typeof(OrderAPIDbContext))]
-    [Migration("20240201182338_nig_1")]
-    partial class nig_1
+    [Migration("20240201215743_mig_1")]
+    partial class mig_1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,8 +40,8 @@ namespace Order.API.Migrations
                     b.Property<int>("OrderStatu")
                         .HasColumnType("int");
 
-                    b.Property<long>("TotalPrice")
-                        .HasColumnType("bigint");
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("OrderId");
 
@@ -76,12 +76,17 @@ namespace Order.API.Migrations
             modelBuilder.Entity("Order.API.Models.Entities.OrderItem", b =>
                 {
                     b.HasOne("Order.API.Models.Entities.Order", "Order")
-                        .WithMany()
+                        .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("Order.API.Models.Entities.Order", b =>
+                {
+                    b.Navigation("OrderItems");
                 });
 #pragma warning restore 612, 618
         }
